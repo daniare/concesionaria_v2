@@ -1,6 +1,8 @@
 package com.mycompany.myapp.service.impl;
 
+import com.mycompany.myapp.domain.Empleado;
 import com.mycompany.myapp.domain.Venta;
+import com.mycompany.myapp.repository.EmpleadoRepository;
 import com.mycompany.myapp.repository.VentaRepository;
 import com.mycompany.myapp.service.VentaService;
 import com.mycompany.myapp.service.dto.VentaDTO;
@@ -24,18 +26,35 @@ public class VentaServiceImpl implements VentaService {
 
     private final VentaRepository ventaRepository;
 
+    private final EmpleadoRepository empleadoRepository;
+
     private final VentaMapper ventaMapper;
 
-    public VentaServiceImpl(VentaRepository ventaRepository, VentaMapper ventaMapper) {
+    public VentaServiceImpl(VentaRepository ventaRepository, VentaMapper ventaMapper, EmpleadoRepository empleadoRepository) {
         this.ventaRepository = ventaRepository;
         this.ventaMapper = ventaMapper;
+        this.empleadoRepository = empleadoRepository;
     }
 
     @Override
     public VentaDTO save(VentaDTO ventaDTO) {
         log.debug("Request to save Venta : {}", ventaDTO);
         Venta venta = ventaMapper.toEntity(ventaDTO);
+
         venta = ventaRepository.save(venta);
+
+        if(null != venta){
+            Empleado empleado = venta.getEmpleado();
+
+            if(null == empleado.getNumeroVentas()){
+                empleado.setNumeroVentas(0);
+            }else{
+                empleado.setNumeroVentas(empleado.getNumeroVentas()+1);
+            }
+
+            empleadoRepository.save(empleado);
+        }
+
         return ventaMapper.toDto(venta);
     }
 
