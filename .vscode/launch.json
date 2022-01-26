@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-PracticaDtoApp<practica-dto>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.mycompany.myapp.PracticaDtoApp",
+            "projectName": "practica-dto",
+            "args": ""
+        }
+    ]
+}
