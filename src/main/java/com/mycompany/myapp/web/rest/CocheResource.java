@@ -2,8 +2,10 @@ package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.domain.Coche;
 import com.mycompany.myapp.repository.CocheRepository;
+import com.mycompany.myapp.repository.specification.CocheSpecification;
 import com.mycompany.myapp.service.CocheService;
 import com.mycompany.myapp.service.dto.CocheDTO;
+import com.mycompany.myapp.service.mapper.CocheMapper;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -42,9 +44,12 @@ public class CocheResource {
 
     private final CocheRepository cocheRepository;
 
-    public CocheResource(CocheService cocheService, CocheRepository cocheRepository) {
+    private final CocheMapper cocheMapper;
+
+    public CocheResource(CocheService cocheService, CocheRepository cocheRepository, CocheMapper cocheMapper) {
         this.cocheService = cocheService;
         this.cocheRepository = cocheRepository;
+        this.cocheMapper = cocheMapper;
     }
 
     /**
@@ -188,5 +193,16 @@ public class CocheResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    @GetMapping("/coches/searchingParam")
+    public ResponseEntity <List<CocheDTO>> findAllBySimpleSearch(
+        Pageable pageable, @RequestParam(required = false, defaultValue = "")String filtro)throws InterruptedException, URISyntaxException{
+
+        filtro = !filtro.equals("undifined") ? filtro : "%";
+        Page<CocheDTO> page = cocheService.findAllBySearchingParam(filtro,pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+
     }
 }

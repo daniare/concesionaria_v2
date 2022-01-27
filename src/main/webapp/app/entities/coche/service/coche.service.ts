@@ -63,4 +63,9 @@ export class CocheService {
     return this.http.get<ICoche[]>(`${this.resourceUrl}/exposicion`, { params: options, observe: 'response' });
   }
 
+  findAllBySimpleSearch(filtro: string, pageable: any):Observable<EntityArrayResponseType> {
+    const options = createRequestOption({filtro, ...pageable});
+    return this.http.get<ICoche[]>(`${this.resourceUrl}/searchingParam`, { params: options, observe: 'response' });
+  }
+
 }

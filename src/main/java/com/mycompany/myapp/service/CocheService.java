@@ -52,4 +52,9 @@ public interface CocheService {
     void delete(Long id);
 
     List <Coche> findAllByExposicionTrue();
+
+
+    Page<CocheDTO> findAllBySearchingParam(String filtro,Pageable pageable);
+
+
 }

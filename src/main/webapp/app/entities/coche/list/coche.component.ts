@@ -23,6 +23,7 @@ export class CocheComponent implements OnInit {
   predicate!: string;
   ascending!: boolean;
   ngbPaginationPage = 1;
+  buscar="";
 
   constructor(
     protected cocheService: CocheService,
@@ -37,6 +38,28 @@ export class CocheComponent implements OnInit {
 
     this.cocheService
       .query({
+        page: pageToLoad - 1,
+        size: this.itemsPerPage,
+        sort: this.sort(),
+      })
+      .subscribe({
+        next: (res: HttpResponse<ICoche[]>) => {
+          this.isLoading = false;
+          this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
+        },
+        error: () => {
+          this.isLoading = false;
+          this.onError();
+        },
+      });
+  }
+
+  buscarPorAtributos(page?: number, dontNavigate?: boolean):void{
+    this.isLoading = true;
+    const pageToLoad: number = page ?? this.page ?? 1;
+
+    this.cocheService
+      .findAllBySimpleSearch(this.buscar,{
         page: pageToLoad - 1,
         size: this.itemsPerPage,
         sort: this.sort(),
