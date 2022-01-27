@@ -57,4 +57,10 @@ export class CocheService {
     }
     return cocheCollection;
   }
+
+  getAllCochesbyExposicion(req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http.get<ICoche[]>(`${this.resourceUrl}/exposicion`, { params: options, observe: 'response' });
+  }
+
 }

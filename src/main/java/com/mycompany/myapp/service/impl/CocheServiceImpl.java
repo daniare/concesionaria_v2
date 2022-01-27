@@ -5,6 +5,8 @@ import com.mycompany.myapp.repository.CocheRepository;
 import com.mycompany.myapp.service.CocheService;
 import com.mycompany.myapp.service.dto.CocheDTO;
 import com.mycompany.myapp.service.mapper.CocheMapper;
+
+import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +37,9 @@ public class CocheServiceImpl implements CocheService {
     public CocheDTO save(CocheDTO cocheDTO) {
         log.debug("Request to save Coche : {}", cocheDTO);
         Coche coche = cocheMapper.toEntity(cocheDTO);
+
+        if(null == coche.getExposicion() || coche.getExposicion() == false) coche.setExposicion(true);;
+
         coche = cocheRepository.save(coche);
         return cocheMapper.toDto(coche);
     }
@@ -72,5 +77,10 @@ public class CocheServiceImpl implements CocheService {
     public void delete(Long id) {
         log.debug("Request to delete Coche : {}", id);
         cocheRepository.deleteById(id);
+    }
+
+    @Override
+    public List <Coche> findAllByExposicionTrue(){
+        return cocheRepository.findAllByExposicionTrue();
     }
 }

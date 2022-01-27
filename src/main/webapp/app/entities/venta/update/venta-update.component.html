@@ -13,7 +13,7 @@
           <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
         </div>
 
-        <div class="form-group">
+        <!--div class="form-group">
           <label class="form-control-label" jhiTranslate="practicaDtoApp.venta.fecha" for="field_fecha">Fecha</label>
           <div class="input-group">
             <input
@@ -30,7 +30,7 @@
               <button type="button" class="btn btn-secondary" (click)="fechaDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
             </span>
           </div>
-        </div>
+        </div-->
 
         <div class="form-group">
           <label class="form-control-label" jhiTranslate="practicaDtoApp.venta.tipoPago" for="field_tipoPago">Tipo Pago</label>
@@ -50,7 +50,7 @@
               [ngValue]="cocheOption.id === editForm.get('coches')!.value?.id ? editForm.get('coches')!.value : cocheOption"
               *ngFor="let cocheOption of cochesCollection; trackBy: trackCocheById"
             >
-              {{ cocheOption.id }}
+              {{ cocheOption.marca }} {{ cocheOption.modelo }}
             </option>
           </select>
         </div>
@@ -63,7 +63,7 @@
               [ngValue]="empleadoOption.id === editForm.get('empleado')!.value?.id ? editForm.get('empleado')!.value : empleadoOption"
               *ngFor="let empleadoOption of empleadosSharedCollection; trackBy: trackEmpleadoById"
             >
-              {{ empleadoOption.id }}
+              {{ empleadoOption.dni }}
             </option>
           </select>
         </div>
@@ -76,7 +76,7 @@
               [ngValue]="clienteOption.id === editForm.get('cliente')!.value?.id ? editForm.get('cliente')!.value : clienteOption"
               *ngFor="let clienteOption of clientesSharedCollection; trackBy: trackClienteById"
             >
-              {{ clienteOption.id }}
+              {{ clienteOption.nombre }}
             </option>
           </select>
         </div>

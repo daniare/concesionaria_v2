@@ -12,5 +12,7 @@ public interface CocheMapper extends EntityMapper<CocheDTO, Coche> {
     @Named("id")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
+    @Mapping(target = "marca", source = "marca")
+    @Mapping(target = "modelo", source = "modelo")
     CocheDTO toDtoId(Coche coche);
 }

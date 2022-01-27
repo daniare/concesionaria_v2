@@ -1,12 +1,17 @@
 package com.mycompany.myapp.service.impl;
 
+import com.mycompany.myapp.domain.Coche;
 import com.mycompany.myapp.domain.Empleado;
 import com.mycompany.myapp.domain.Venta;
+import com.mycompany.myapp.repository.CocheRepository;
 import com.mycompany.myapp.repository.EmpleadoRepository;
 import com.mycompany.myapp.repository.VentaRepository;
 import com.mycompany.myapp.service.VentaService;
 import com.mycompany.myapp.service.dto.VentaDTO;
 import com.mycompany.myapp.service.mapper.VentaMapper;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,12 +33,15 @@ public class VentaServiceImpl implements VentaService {
 
     private final EmpleadoRepository empleadoRepository;
 
+    private final CocheRepository cocheRepository;
+
     private final VentaMapper ventaMapper;
 
-    public VentaServiceImpl(VentaRepository ventaRepository, VentaMapper ventaMapper, EmpleadoRepository empleadoRepository) {
+    public VentaServiceImpl(VentaRepository ventaRepository, VentaMapper ventaMapper, EmpleadoRepository empleadoRepository, CocheRepository cocheRepository) {
         this.ventaRepository = ventaRepository;
         this.ventaMapper = ventaMapper;
         this.empleadoRepository = empleadoRepository;
+        this.cocheRepository = cocheRepository;
     }
 
     @Override
@@ -41,10 +49,20 @@ public class VentaServiceImpl implements VentaService {
         log.debug("Request to save Venta : {}", ventaDTO);
         Venta venta = ventaMapper.toEntity(ventaDTO);
 
+        venta.setFecha(LocalDate.now());
+
         venta = ventaRepository.save(venta);
 
         if(null != venta){
+
             Empleado empleado = venta.getEmpleado();
+            Coche coche = venta.getCoches();
+
+            if(null != coche){
+                coche.setExposicion(false);
+                cocheRepository.save(coche);
+
+            }
 
             if(null == empleado.getNumeroVentas()){
                 empleado.setNumeroVentas(0);
@@ -53,6 +71,49 @@ public class VentaServiceImpl implements VentaService {
             }
 
             empleadoRepository.save(empleado);
+        }
+
+        return ventaMapper.toDto(venta);
+    }
+
+    @Override
+    public VentaDTO update(VentaDTO ventaDTO) {
+        log.debug("Request to save Venta : {}", ventaDTO);
+
+        Venta venta = ventaMapper.toEntity(ventaDTO);
+        Venta ventaAnterior = ventaRepository.getById(venta.getId());
+
+        Empleado empleado = venta.getEmpleado();
+        Empleado empleadoAnterior = ventaAnterior.getEmpleado();
+
+        venta = ventaRepository.save(venta);
+
+        if(null != venta){
+
+
+            Coche coche = venta.getCoches();
+
+
+            if(null != coche){
+                coche.setExposicion(false);
+                cocheRepository.save(coche);
+
+            }
+
+            if(null == empleado.getNumeroVentas()){
+                empleado.setNumeroVentas(0);
+            }else{
+
+                if(!empleado.equals(empleadoAnterior)){
+
+                    empleadoAnterior.setNumeroVentas(empleadoAnterior.getNumeroVentas()-1);
+                    empleado.setNumeroVentas(empleado.getNumeroVentas()+1);
+                }
+
+            }
+
+            empleadoRepository.save(empleado);
+            empleadoRepository.save(empleadoAnterior);
         }
 
         return ventaMapper.toDto(venta);

@@ -18,6 +18,14 @@ public interface VentaService {
     VentaDTO save(VentaDTO ventaDTO);
 
     /**
+     * Updatea venta.
+     *
+     * @param ventaDTO the entity to save.
+     * @return the persisted entity.
+     */
+    VentaDTO update(VentaDTO ventaDTO);
+
+    /**
      * Partially updates a venta.
      *
      * @param ventaDTO the entity to update partially.

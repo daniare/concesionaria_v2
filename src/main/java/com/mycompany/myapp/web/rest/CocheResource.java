@@ -1,5 +1,6 @@
 package com.mycompany.myapp.web.rest;
 
+import com.mycompany.myapp.domain.Coche;
 import com.mycompany.myapp.repository.CocheRepository;
 import com.mycompany.myapp.service.CocheService;
 import com.mycompany.myapp.service.dto.CocheDTO;
@@ -142,12 +143,22 @@ public class CocheResource {
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of coches in body.
      */
+
+
     @GetMapping("/coches")
     public ResponseEntity<List<CocheDTO>> getAllCoches(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
         log.debug("REST request to get a page of Coches");
         Page<CocheDTO> page = cocheService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+
+    @GetMapping("/coches/exposicion")
+    public ResponseEntity<List<Coche>> getAllCochesByExposicionTrue() {
+        log.debug("REST request to get a page of Coches");
+        List<Coche> coches = cocheService.findAllByExposicionTrue();
+        return ResponseEntity.ok().body(coches);
     }
 
     /**

@@ -53,8 +53,11 @@
           </td>
           <td>{{ empleado.dni }}</td>
           <td>{{ empleado.nombre }}</td>
-          <td>{{ empleado.activo }}</td>
-          <td>{{ empleado.numeroVentas }}</td>
+          <td>
+            <span class="text-danger" *ngIf="!empleado.activo"><b>INACTIVO</b></span>
+            <span class="text-success" *ngIf="empleado.activo"><b>ACTIVO</b></span>
+          </td>
+          <td><h3>{{ empleado.numeroVentas }}</h3></td>
           <td class="text-right">
             <div class="btn-group">
               <button

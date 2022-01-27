@@ -13,6 +13,7 @@ import { IEmpleado } from 'app/entities/empleado/empleado.model';
 import { EmpleadoService } from 'app/entities/empleado/service/empleado.service';
 import { ICliente } from 'app/entities/cliente/cliente.model';
 import { ClienteService } from 'app/entities/cliente/service/cliente.service';
+import dayjs from 'dayjs/esm';
 
 @Component({
   selector: 'jhi-venta-update',
@@ -27,7 +28,7 @@ export class VentaUpdateComponent implements OnInit {
 
   editForm = this.fb.group({
     id: [],
-    fecha: [],
+    //fecha: [],
     tipoPago: [],
     total: [],
     coches: [],
@@ -100,7 +101,7 @@ export class VentaUpdateComponent implements OnInit {
   protected updateForm(venta: IVenta): void {
     this.editForm.patchValue({
       id: venta.id,
-      fecha: venta.fecha,
+      //fecha: venta.fecha,
       tipoPago: venta.tipoPago,
       total: venta.total,
       coches: venta.coches,
@@ -115,7 +116,7 @@ export class VentaUpdateComponent implements OnInit {
 
   protected loadRelationshipsOptions(): void {
     this.cocheService
-      .query({ filter: 'venta-is-null' })
+      .getAllCochesbyExposicion({ filter: 'venta-is-null' })
       .pipe(map((res: HttpResponse<ICoche[]>) => res.body ?? []))
       .pipe(map((coches: ICoche[]) => this.cocheService.addCocheToCollectionIfMissing(coches, this.editForm.get('coches')!.value)))
       .subscribe((coches: ICoche[]) => (this.cochesCollection = coches));
@@ -143,7 +144,8 @@ export class VentaUpdateComponent implements OnInit {
     return {
       ...new Venta(),
       id: this.editForm.get(['id'])!.value,
-      fecha: this.editForm.get(['fecha'])!.value,
+      //fecha:this.editForm.get(['fecha'])!.value,
+      fecha : dayjs(),
       tipoPago: this.editForm.get(['tipoPago'])!.value,
       total: this.editForm.get(['total'])!.value,
       coches: this.editForm.get(['coches'])!.value,

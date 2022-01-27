@@ -93,7 +93,7 @@ public class VentaResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        VentaDTO result = ventaService.save(ventaDTO);
+        VentaDTO result = ventaService.update(ventaDTO);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, ventaDTO.getId().toString()))

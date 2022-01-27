@@ -63,8 +63,11 @@
           <td>{{ coche.modelo }}</td>
           <td>{{ coche.color }}</td>
           <td>{{ coche.numeroSerie }}</td>
-          <td>{{ coche.precio }}</td>
-          <td>{{ coche.exposicion }}</td>
+          <td><h3>{{ coche.precio }}€</h3></td>
+          <td>
+            <span class="text-danger" *ngIf="!coche.exposicion"><b>VENDIDO</b></span>
+            <span class="text-success" *ngIf="coche.exposicion"><b>DISPONIBLE</b></span>
+          </td>
           <td class="text-right">
             <div class="btn-group">
               <button type="submit" [routerLink]="['/coche', coche.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">

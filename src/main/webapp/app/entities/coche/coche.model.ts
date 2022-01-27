@@ -18,7 +18,8 @@ export class Coche implements ICoche {
     public precio?: number | null,
     public exposicion?: boolean | null
   ) {
-    this.exposicion = this.exposicion ?? false;
+    //this.exposicion = this.exposicion ?? false;
+    this.exposicion = true;
   }
 }
 

@@ -22,7 +22,7 @@ export class CocheUpdateComponent implements OnInit {
     color: [],
     numeroSerie: [],
     precio: [],
-    exposicion: [],
+    //exposicion: [],
   });
 
   constructor(protected cocheService: CocheService, protected activatedRoute: ActivatedRoute, protected fb: FormBuilder) {}
@@ -74,7 +74,7 @@ export class CocheUpdateComponent implements OnInit {
       color: coche.color,
       numeroSerie: coche.numeroSerie,
       precio: coche.precio,
-      exposicion: coche.exposicion,
+      //exposicion: coche.exposicion,
     });
   }
 
@@ -87,7 +87,7 @@ export class CocheUpdateComponent implements OnInit {
       color: this.editForm.get(['color'])!.value,
       numeroSerie: this.editForm.get(['numeroSerie'])!.value,
       precio: this.editForm.get(['precio'])!.value,
-      exposicion: this.editForm.get(['exposicion'])!.value,
+      //exposicion: this.editForm.get(['exposicion'])!.value,
     };
   }
 }
